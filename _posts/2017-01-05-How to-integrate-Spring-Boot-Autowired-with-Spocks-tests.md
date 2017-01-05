@@ -24,7 +24,7 @@ title: How to integrate Spring Boot Autowired with Spocks tests
 
 	import spock.lang.Specification
 
-	class CaloriesInfoIntentTest extends Specification{
+	class CaloriesInfoIntentTest extends Specification {
 
 		def test() {
 			expect:
@@ -47,7 +47,7 @@ title: How to integrate Spring Boot Autowired with Spocks tests
 	@RunWith(SpringRunner.class)
 	@ContextConfiguration
 	@SpringBootTest
-	class CaloriesInfoIntentTest extends Specification{
+	class CaloriesInfoIntentTest extends Specification {
 	
 		@InjectMocks
 		@Autowired
