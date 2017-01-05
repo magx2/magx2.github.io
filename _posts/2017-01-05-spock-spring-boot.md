@@ -1,3 +1,7 @@
+---
+layout: post
+title: How to integrate Spring (Boot) @Autowired with Spocks tests
+---
 # How to integrate Spring (Boot) ```@Autowired``` with Spocks tests
 
 ## Add Spock to ```build.gradle```
