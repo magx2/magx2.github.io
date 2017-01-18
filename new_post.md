@@ -1,5 +1,3 @@
-# Post template
-
 ```
 ---
 layout: post
