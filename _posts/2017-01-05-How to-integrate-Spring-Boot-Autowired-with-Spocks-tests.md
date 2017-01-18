@@ -1,6 +1,6 @@
 ---
 layout: post
-title: How to integrate Spring (Boot) ```@Autowired``` with Spocks tests
+title: How to integrate Spring (Boot) @Autowired with Spocks tests
 post_author: Martin Grześlowski
 category: spring
 tags: ['spring', 'spring-boot', 'spock'] 
