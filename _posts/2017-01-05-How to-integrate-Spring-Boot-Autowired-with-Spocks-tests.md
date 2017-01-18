@@ -1,17 +1,18 @@
 ---
 layout: post
-title: How to integrate Spring Boot Autowired with Spocks tests
+title: How to integrate Spring (Boot) ```@Autowired``` with Spocks tests
+post_author: Martin Grześlowski
+category: spring
+tags: ['spring', 'spring-boot', 'spock'] 
 ---
-# How to integrate Spring (Boot) ```@Autowired``` with Spocks tests
-
 ## Add Spock to ```build.gradle```
 
-  apply plugin: 'groovy'
+	apply plugin: 'groovy'
   
 	dependencies {
 		compile('org.springframework.boot:spring-boot-starter')
 		
-    testCompile('org.springframework.boot:spring-boot-starter-test')
+		testCompile('org.springframework.boot:spring-boot-starter-test')
 		testCompile(
 				'junit:junit:4.12',
 				'org.codehaus.groovy:groovy-all:2.4.4',
@@ -60,7 +61,7 @@ title: How to integrate Spring Boot Autowired with Spocks tests
 		Service2 service2
 	
 		@Test
-		test() {
+		def test() {
 			expect:
 			obj.service1
 			obj.service2
