@@ -25,7 +25,7 @@ tags: ['spring', 'spring-boot', 'spock']
 
 	import spock.lang.Specification
 
-	class CaloriesInfoIntentTest extends Specification {
+	class MockSpecification extends Specification {
 
 		def test() {
 			expect:
@@ -48,7 +48,7 @@ tags: ['spring', 'spring-boot', 'spock']
 	@RunWith(SpringRunner.class)
 	@ContextConfiguration
 	@SpringBootTest
-	class CaloriesInfoIntentTest extends Specification {
+	class MockSpecification extends Specification {
 	
 		@InjectMocks
 		@Autowired
