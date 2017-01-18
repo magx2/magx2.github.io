@@ -1,7 +1,7 @@
 ```
 ---
 layout: post
-title: title of the post, you can use markdown
+title: title of the post, don't use markdown
 post_author: Martin Grześlowski
 category: one-category
 tags: ['yaml', 'list of', 'tags'] 
