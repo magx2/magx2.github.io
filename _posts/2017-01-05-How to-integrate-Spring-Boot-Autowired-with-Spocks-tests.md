@@ -9,6 +9,7 @@ tags: ['spring', 'spring-boot', 'spock']
 
 In this tutorial I will show you how to integrate Springs ```@Autowired``` with Spocks tests. With this approach you will be able to annotate mock objects with ```@MockBean``` and get them automagicly injected into tested class.
 
+
 ## Add Spock to ```build.gradle```
 
 	apply plugin: 'groovy'
