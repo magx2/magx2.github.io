@@ -16,4 +16,4 @@ grailsApplication.domainClasses*.clazz.each { Class domain ->
 
 Read more: [http://docs.grails.org/latest/guide/webServices.html#hypermedia](http://docs.grails.org/latest/guide/webServices.html#hypermedia)
 
-Run on Grails 3.2.4
+Ran on Grails 3.2.4
