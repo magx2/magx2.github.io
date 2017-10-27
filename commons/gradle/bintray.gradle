@@ -1,0 +1,140 @@
+plugins {
+	id "com.jfrog.bintray" version "1.7.3"
+}
+
+bintray {
+	user = bintrayConfig.user
+	key = bintrayConfig.key
+
+	publications = bintrayConfig.publications
+	dryRun = project.hasProperty('dryRun')
+	publish = true
+	pkg {
+		repo = bintrayConfig.repo
+		name = bintrayConfig.groupId
+		userOrg = bintrayConfig.userOrg
+		desc = bintrayConfig.desc
+		websiteUrl = bintrayConfig.websiteUrl
+		issueTrackerUrl = bintrayConfig.issueTrackerUrl
+		vcsUrl = bintrayConfig.vcsUrl
+		licenses = bintrayConfig.licenses
+		labels = bintrayConfig.labels
+		publicDownloadNumbers = bintrayConfig.publicDownloadNumbers
+
+		githubRepo = bintrayConfig.githubRepo
+		githubReleaseNotesFile = bintrayConfig.githubReleaseNotesFile
+
+		//noinspection GroovyAssignabilityCheck
+		version {
+			name = bintrayConfig.versionName
+			vcsTag = bintrayConfig.versionVcsTag
+			gpg {
+				sign = true
+				passphrase = bintrayConfig.passphrase
+			}
+		}
+	}
+}
+
+publishing {
+	publications {
+		BintrayProjectPublication(MavenPublication) {
+			from components.java
+			groupId bintrayConfig.groupId
+			artifactId bintrayConfig.name
+			version bintrayConfig.versionName
+
+			artifact sourceJar {
+				classifier "sources"
+			}
+		}
+	}
+}
+
+class BintrayConfig {
+	final String user
+	final String key
+
+	final List<String> publications
+	final String repo
+	final String groupId
+	final String name
+	final String userOrg
+	final String desc
+	final String websiteUrl
+	final String issueTrackerUrl
+	final String vcsUrl
+	final List<String> licenses
+	final List<String> labels
+	final boolean publicDownloadNumbers
+	final String githubRepo
+	final String githubReleaseNotesFile
+
+	final String versionName
+	final String versionVcsTag
+
+	final String passphrase
+
+	BintrayConfig(
+			final String user,
+			final String key,
+			final List<String> publications,
+			final String repo,
+			final String groupId,
+			final String name,
+			final String userOrg,
+			final String desc,
+			final String websiteUrl,
+			final String issueTrackerUrl,
+			final String vcsUrl,
+			final List<String> licenses,
+			final List<String> labels,
+			final boolean publicDownloadNumbers,
+			final String githubRepo,
+			final String githubReleaseNotesFile,
+			final String versionName,
+			final String versionVcsTag,
+			final String passphrase) {
+		this.user = user ?: System.getenv('BINTRAY_USER')
+		this.key = key ?: System.getenv('BINTRAY_KEY')
+
+		this.publications = publications ?: ['BintrayProjectPublication']
+		this.repo = Objects.requireNonNull(repo, "repo")
+		this.groupId = groupId ?: project.group
+		this.name = Objects.requireNonNull(name, "name")
+		this.userOrg = userOrg
+		this.desc = desc
+		this.websiteUrl = Objects.requireNonNull(websiteUrl, "websiteUrl")
+		this.issueTrackerUrl = Objects.requireNonNull(issueTrackerUrl, "issueTrackerUrl")
+		this.vcsUrl = Objects.requireNonNull(vcsUrl, "vcsUrl")
+		this.licenses = Objects.requireNonNull(licenses, "licenses")
+		this.labels = labels ?: []
+		this.publicDownloadNumbers = publicDownloadNumbers
+		this.githubRepo = githubRepo
+		this.githubReleaseNotesFile = githubReleaseNotesFile
+
+		this.versionName = parserVersionName(versionName)
+		this.versionVcsTag = parserVersionTag(versionVcsTag)
+		this.passphrase = parsePassphrase(passphrase)
+	}
+
+	private String parserVersionName(String versionName) {
+		return (versionName ?: project.version).replaceAll("-SNAPSHOT", '')
+	}
+
+	private String parserVersionTag(String versionTag) {
+		return 'v' + (versionTag ?: project.version).replaceAll("-SNAPSHOT", '')
+	}
+
+	private String parsePassphrase(String passphrase) {
+		def defaultPassphrase = "${project.name}Passphrase"
+		if (passphrase) {
+			return passphrase
+		} else if (project.hasProperty(defaultPassphrase)) {
+			return project.property(defaultPassphrase)
+		} else {
+			return System.getenv(defaultPassphrase)
+		}
+	}
+
+}
