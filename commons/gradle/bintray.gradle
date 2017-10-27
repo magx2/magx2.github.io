@@ -12,7 +12,7 @@ bintray {
 	publish = true
 	pkg {
 		repo = conf.repo
-		name = conf.groupId
+		name = "${conf.groupId}.${conf.name}"
 		userOrg = conf.userOrg
 		desc = conf.desc
 		websiteUrl = conf.websiteUrl
