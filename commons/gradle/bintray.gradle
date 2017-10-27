@@ -1,6 +1,4 @@
-plugins {
-	id "com.jfrog.bintray" version "1.7.3"
-}
+apply plugin: "com.jfrog.bintray"
 
 bintray {
 	user = bintrayConfig.user
