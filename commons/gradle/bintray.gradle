@@ -99,6 +99,9 @@ class BintrayConfig {
 		this.websiteUrl = Objects.requireNonNull(params.websiteUrl, "websiteUrl")
 		this.issueTrackerUrl = Objects.requireNonNull(params.issueTrackerUrl, "issueTrackerUrl")
 		this.vcsUrl = Objects.requireNonNull(params.vcsUrl, "vcsUrl")
+		if(!vcsUrl.endsWith(".git")) {
+			throw new IllegalArgumentException("vcsUrl needs to end with \".git\". $vcsUrl")
+		}
 		this.licenses = Objects.requireNonNull(params.licenses, "licenses")
 		this.labels = params.labels ?: []
 		this.publicDownloadNumbers = params.publicDownloadNumbers
