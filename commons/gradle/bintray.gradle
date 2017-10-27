@@ -1,46 +1,48 @@
 apply plugin: "com.jfrog.bintray"
 
 bintray {
-	user = bintrayConfig.user
-	key = bintrayConfig.key
+	def conf = new BintrayConfig(bintrayConfig)
+	user = conf.user
+	key = conf.key
 
-	publications = bintrayConfig.publications
+	publications = conf.publications
 	dryRun = project.hasProperty('dryRun')
 	publish = true
 	pkg {
-		repo = bintrayConfig.repo
-		name = bintrayConfig.groupId
-		userOrg = bintrayConfig.userOrg
-		desc = bintrayConfig.desc
-		websiteUrl = bintrayConfig.websiteUrl
-		issueTrackerUrl = bintrayConfig.issueTrackerUrl
-		vcsUrl = bintrayConfig.vcsUrl
-		licenses = bintrayConfig.licenses
-		labels = bintrayConfig.labels
-		publicDownloadNumbers = bintrayConfig.publicDownloadNumbers
+		repo = conf.repo
+		name = conf.groupId
+		userOrg = conf.userOrg
+		desc = conf.desc
+		websiteUrl = conf.websiteUrl
+		issueTrackerUrl = conf.issueTrackerUrl
+		vcsUrl = conf.vcsUrl
+		licenses = conf.licenses
+		labels = conf.labels
+		publicDownloadNumbers = conf.publicDownloadNumbers
 
-		githubRepo = bintrayConfig.githubRepo
-		githubReleaseNotesFile = bintrayConfig.githubReleaseNotesFile
+		githubRepo = conf.githubRepo
+		githubReleaseNotesFile = conf.githubReleaseNotesFile
 
 		//noinspection GroovyAssignabilityCheck
 		version {
-			name = bintrayConfig.versionName
-			vcsTag = bintrayConfig.versionVcsTag
+			name = conf.versionName
+			vcsTag = conf.versionVcsTag
 			gpg {
 				sign = true
-				passphrase = bintrayConfig.passphrase
+				passphrase = conf.passphrase
 			}
 		}
 	}
 }
 
 publishing {
+	def conf = new BintrayConfig(bintrayConfig)
 	publications {
 		BintrayProjectPublication(MavenPublication) {
 			from components.java
-			groupId bintrayConfig.groupId
-			artifactId bintrayConfig.name
-			version bintrayConfig.versionName
+			groupId conf.groupId
+			artifactId conf.name
+			version conf.versionName
 
 			artifact sourceJar {
 				classifier "sources"
@@ -73,6 +75,30 @@ class BintrayConfig {
 
 	final String passphrase
 
+	BintrayConfig(Map params) {
+		this(
+				map.user,
+				map.key,
+				map.publications,
+				map.repo,
+				map.groupId,
+				map.name,
+				map.userOrg,
+				map.desc,
+				map.websiteUrl,
+				map.issueTrackerUrl,
+				map.vcsUrl,
+				map.licenses,
+				map.labels,
+				map.publicDownloadNumbers,
+				map.githubRepo,
+				map.githubReleaseNotesFile,
+				map.versionName,
+				map.versionVcsTag,
+				map.passphrase
+		)
+	}
+	
 	BintrayConfig(
 			final String user = null,
 			final String key = null,
