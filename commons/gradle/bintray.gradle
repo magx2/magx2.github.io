@@ -76,12 +76,12 @@ class BintrayConfig {
 	final String passphrase
 
 	BintrayConfig(
-			final String user,
-			final String key,
-			final List<String> publications,
+			final String user = null,
+			final String key = null,
+			final List<String> publications = null,
 			final String repo,
-			final String groupId,
-			final String name,
+			final String groupId = null,
+			final String name=null,
 			final String userOrg,
 			final String desc,
 			final String websiteUrl,
@@ -89,29 +89,29 @@ class BintrayConfig {
 			final String vcsUrl,
 			final List<String> licenses,
 			final List<String> labels,
-			final boolean publicDownloadNumbers,
+			final boolean publicDownloadNumbers = true,
 			final String githubRepo,
-			final String githubReleaseNotesFile,
-			final String versionName,
-			final String versionVcsTag,
-			final String passphrase) {
+			final String githubReleaseNotesFile=null,
+			final String versionName  = null,
+			final String versionVcsTag = null,
+			final String passphrase = null) {
 		this.user = user ?: System.getenv('BINTRAY_USER')
 		this.key = key ?: System.getenv('BINTRAY_KEY')
 
 		this.publications = publications ?: ['BintrayProjectPublication']
 		this.repo = Objects.requireNonNull(repo, "repo")
 		this.groupId = groupId ?: project.group
-		this.name = Objects.requireNonNull(name, "name")
-		this.userOrg = userOrg
-		this.desc = desc
+		this.name = name ?: project.name
+		this.userOrg = Objects.requireNonNull(userOrg, "userOrg")
+		this.desc = Objects.requireNonNull(desc, "desc")
 		this.websiteUrl = Objects.requireNonNull(websiteUrl, "websiteUrl")
 		this.issueTrackerUrl = Objects.requireNonNull(issueTrackerUrl, "issueTrackerUrl")
 		this.vcsUrl = Objects.requireNonNull(vcsUrl, "vcsUrl")
 		this.licenses = Objects.requireNonNull(licenses, "licenses")
 		this.labels = labels ?: []
 		this.publicDownloadNumbers = publicDownloadNumbers
-		this.githubRepo = githubRepo
-		this.githubReleaseNotesFile = githubReleaseNotesFile
+		this.githubRepo = Objects.requireNonNull(githubRepo,"githubRepo")
+		this.githubReleaseNotesFile = githubReleaseNotesFile ?: "README.md"
 
 		this.versionName = parserVersionName(versionName)
 		this.versionVcsTag = parserVersionTag(versionVcsTag)
