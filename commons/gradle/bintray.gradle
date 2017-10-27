@@ -57,6 +57,7 @@ task sourceJar(type: Jar) {
 	from sourceSets.main.allJava
 }
 
+@groovy.transform.ToString(includeNames=true)
 class BintrayConfig {
 	final project
 
@@ -86,8 +87,8 @@ class BintrayConfig {
 	BintrayConfig(def params, def project) {
 		this.project = project
 
-		this.user = params.user ?: System.getenv('BINTRAY_USER')
-		this.key = params.key ?: System.getenv('BINTRAY_KEY')
+		this.user = parseUser(params.user)
+		this.key = parseKey(params.key)
 
 		this.publications = params.publications ?: ['BintrayProjectPublication']
 		this.repo = Objects.requireNonNull(params.repo, "repo")
@@ -101,21 +102,49 @@ class BintrayConfig {
 		this.licenses = Objects.requireNonNull(params.licenses, "licenses")
 		this.labels = params.labels ?: []
 		this.publicDownloadNumbers = params.publicDownloadNumbers
-		this.githubRepo = Objects.requireNonNull(params.githubRepo,"githubRepo")
+		this.githubRepo = Objects.requireNonNull(params.githubRepo, "githubRepo")
 		this.githubReleaseNotesFile = params.githubReleaseNotesFile ?: "README.md"
 
-		this.versionName = parserVersionName(params.versionName)
-		this.versionVcsTag = parserVersionTag(params.versionVcsTag)
+		this.versionName = parseVersionName(params.versionName)
+		this.versionVcsTag = parseVersionTag(params.versionVcsTag)
 
 		this.passphrase = parsePassphrase(params.passphrase)
 	}
-	
-	private String parserVersionName(String versionName) {
-		return (versionName ?: project.version).replaceAll("-SNAPSHOT", '')
+
+	private String parseUser(String user) {
+		if (user) {
+			return user
+		} else if (project.hasProperty("bintrayUser")) {
+			return project.property("bintrayUser")
+		} else if(System.getenv('BINTRAY_USER')) {
+			return System.getenv('BINTRAY_USER')
+		} else {
+			throw new IllegalArgumentException("Please pass \"user\"")
+		}
 	}
 
-	private String parserVersionTag(String versionTag) {
-		return 'v' + (versionTag ?: project.version).replaceAll("-SNAPSHOT", '')
+	private String parseKey(String key) {
+		if (key) {
+			return key
+		} else if (project.hasProperty("bintrayKey")) {
+			return project.property("bintrayKey")
+		} else if(System.getenv('BINTRAY_KEY')) {
+			return System.getenv('BINTRAY_KEY')
+		} else {
+			throw new IllegalArgumentException("Please pass \"key\"")
+		}
+	}
+
+	private String parseVersionName(String versionName) {
+		def all = (versionName ?: project.version).replaceAll("-SNAPSHOT", '') as String
+		if(!all) {
+			throw new IllegalArgumentException("There is no version!")
+		}
+		return all
+	}
+
+	private String parseVersionTag(String versionTag) {
+		return 'v' + (versionTag ?: versionName)
 	}
 
 	private String parsePassphrase(String passphrase) {
@@ -124,9 +153,10 @@ class BintrayConfig {
 			return passphrase
 		} else if (project.hasProperty(defaultPassphrase)) {
 			return project.property(defaultPassphrase)
-		} else {
+		} else if(System.getenv(defaultPassphrase)) {
 			return System.getenv(defaultPassphrase)
+		} else {
+			throw new IllegalArgumentException("Please provide \"passphrase\". If you want to do this in `gradle.properties` name it $defaultPassphrase")
 		}
 	}
-
 }
