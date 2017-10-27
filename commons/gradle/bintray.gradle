@@ -95,7 +95,7 @@ class BintrayConfig {
 		this.groupId = params.groupId ?: project.group
 		this.name = params.name ?: project.name
 		this.userOrg = Objects.requireNonNull(params.userOrg, "userOrg")
-		this.desc = Objects.requireNonNull(params.desc, "desc")
+		this.desc = parseDesc(params.desc)
 		this.websiteUrl = Objects.requireNonNull(params.websiteUrl, "websiteUrl")
 		this.issueTrackerUrl = Objects.requireNonNull(params.issueTrackerUrl, "issueTrackerUrl")
 		this.vcsUrl = Objects.requireNonNull(params.vcsUrl, "vcsUrl")
@@ -135,6 +135,16 @@ class BintrayConfig {
 			return System.getenv('BINTRAY_KEY')
 		} else {
 			throw new IllegalArgumentException("Please pass \"key\"")
+		}
+	}
+
+	private String parseDesc(String desc) {
+		if (desc) {
+			return desc
+		} else if (project.description) {
+			return project.description
+		} else {
+			throw new IllegalArgumentException("Please pass \"desc\"")
 		}
 	}
 
