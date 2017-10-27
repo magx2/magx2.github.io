@@ -104,7 +104,7 @@ class BintrayConfig {
 		}
 		this.licenses = Objects.requireNonNull(params.licenses, "licenses")
 		this.labels = params.labels ?: []
-		this.publicDownloadNumbers = params.publicDownloadNumbers
+		this.publicDownloadNumbers = params.hasProperty('publicDownloadNumbers') ? params.publicDownloadNumbers : true
 		this.githubRepo = Objects.requireNonNull(params.githubRepo, "githubRepo")
 		this.githubReleaseNotesFile = params.githubReleaseNotesFile ?: "README.md"
 
