@@ -1,7 +1,7 @@
 apply plugin: "com.jfrog.bintray"
 
 bintray {
-	def conf = new BintrayConfig(bintrayConfig)
+	def conf = new BintrayConfig(ext.bintrayConfig)
 	user = conf.user
 	key = conf.key
 
@@ -36,7 +36,7 @@ bintray {
 }
 
 publishing {
-	def conf = new BintrayConfig(bintrayConfig)
+	def conf = new BintrayConfig(ext.bintrayConfig)
 	publications {
 		BintrayProjectPublication(MavenPublication) {
 			from components.java
